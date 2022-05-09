@@ -10,15 +10,53 @@ class Node{
 		this.right=null;
 	}
 }
+class ExsitPair{
+	 int dist;
+	 boolean pairFound;
+	 ExsitPair(int d,boolean p){
+		 dist=d;
+		 pairFound=p;
+	 }
+	}
+class FindDistance{
+	 ExsitPair minDistance(Node root, Node x,Node y) {
+		if(root==null)
+			return new ExsitPair(-1,false);
+		ExsitPair left=minDistance(root.left,x,y);
+		ExsitPair right=minDistance(root.right,x,y);
+		if(root==x || root==y) {
+			if(left.dist!=-1 || right.dist!=-1)
+				return new ExsitPair(Math.max(left.dist,right.dist),true);
+			return new ExsitPair(1,false);
+		}
+		if(left.dist!=-1 && right.dist!=-1)
+			return new ExsitPair(left.dist+right.dist,true);;
+		if(left.dist!=-1 || right.dist!=-1)
+			if(left.pairFound==true)
+				return new ExsitPair(Math.max(left.dist,right.dist),true);
+			else
+				return new ExsitPair(Math.max(left.dist,right.dist)+1,false);
+		
+		return new ExsitPair(-1,false);
+	}
+}
 public class MinDistance {
-	public static int ans=-1;
+	
 	public static void main(String[] args) {
 		Scanner s=new Scanner(System.in);
 		Node root=insert();
-		int x=s.nextInt();
-		int y=s.nextInt();
-		minDist(root,x,y);
-		System.out.println(ans);
+		Node x=root.left;
+		Node y=root.right.left;
+		if(x==y)
+			System.out.println(0);
+		else {
+		FindDistance fd=new FindDistance();
+		ExsitPair ans=fd.minDistance(root,x,y);
+		if(!ans.pairFound)
+			System.out.println("Both or any one of the node not found");
+		else
+			System.out.println(ans.dist);
+		}
 	}
 	public static Node insert() {
 		Scanner s=new Scanner(System.in);
@@ -34,27 +72,6 @@ public class MinDistance {
 		return root;
 	}
 
-	public static int minDist(Node root, int x,int y) {
-		if(root==null)
-			return -1;
-		int left=minDist(root.left,x,y);
-		int right=minDist(root.right,x,y);
-		if(root.data==x || root.data==y) {
-			if(left!=-1 || right!=-1) {
-				ans=Math.max(left, right);
-				return -1;
-			}
-			else
-				return 1;
-		}
-		if(left!=-1 && right!=-1) {
-			ans=left+right;
-			return -1;
-		}
-		if(left!=-1 || right!=-1)
-			return Math.max(left, right)+1;
-		return -1;
-		
-	}
+	
 
 }
