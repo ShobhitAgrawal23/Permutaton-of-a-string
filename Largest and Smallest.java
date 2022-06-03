@@ -38,14 +38,37 @@ public class LargestAndSmallest {
 		return min;
 	}
 	public static PairLS LrSm(int[] arr) {
-		int min=arr[0];
-		int max=arr[0];
-		for(int i=1;i<arr.length;i++) {
-			if(arr[i]<min)
-				min=arr[i];
-			else if(arr[i]>max)
-				max=arr[i];
-			
+		int min,max,i;
+		
+		if(arr.length%2==0) {
+			if(arr[0]>arr[1]) {
+				max=arr[0];
+				min=arr[1];
+			}
+			else {
+				max=arr[0];
+				min=arr[1];
+			}
+			i=2;
+		}
+		else {
+			min=max=arr[0];
+			i=1;
+		}
+		while(i<arr.length-1) {
+			if(arr[i]>arr[i+1]) {
+				if(max<arr[i])
+					max=arr[i];
+				if(min>arr[i+1])
+					min=arr[i+1];
+			}
+			else {
+				if(max<arr[i+1])
+					max=arr[i+1];
+				if(min>arr[i])
+					min=arr[i];
+			}
+			i+=2;
 		}
 		return new PairLS(max,min);
 	}
